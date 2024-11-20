@@ -1,20 +1,29 @@
 
 <!-- <router-outlet /> -->
 <header class="h-24 p-6 w-full flex justify-end">
+  <a aria-label="Language change link" href="#" (click)="toggleLang()" class="mr-4">{{lang === 'bg' ? 'EN' : 'БГ'}}</a>
   <a aria-label="Contact link" href="#contacts" class="hover:underline">{{ contactsTitle }}</a>
 </header>
 
 <div class="flex w-full flex-col">
   <main class="flex-auto max-w-3xl mx-auto">
-    <section class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative">
-      <img class="h-48 w-48 sm:h-56 sm:w-56 rounded-md mx-auto object-cover" src="/assets/images/martinruskov.png" alt="profile photo">
-      <h1 class="text-center text-4xl mt-12">{{ name }}</h1>
-      <h2 class="text-center text-2xl mt-2 mb-4">{{ title }}</h2>
-      <p>{{ introText }}</p>
+    <section class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative mt-[3rem]">
+      <h1 class="text-2xl font-light mb-2">{{ greeting }}</h1>
+      <h1 class="text-6xl font-medium mb-2">{{ firstName }} {{ lastName }}</h1>
+      <h2 class="text-2xl mt-1 font-light">{{ title }}</h2>
+      <div class="flex">
+        <div>
+          <h2 class="text-2xl mt-1 font-light mt-2">{{ location }}</h2>
+        </div>
+        <img class="h-48 w-48 sm:h-56 sm:w-56 mr-4 rounded-md mx-auto object-cover" src="/assets/images/martinruskov.png" alt="profile photo">
+        
+      </div>
+      <p class="mt-5 text-zinc-700">{{ introText }}</p>
+      
     </section>
     <section id="about" class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative mt-[8rem]">
       <h2 class="text-center text-3xl mb-4">{{ aboutTitle }}</h2>
-      <p>{{ aboutText }}</p>
+      <p class="text-zinc-700">{{ aboutText }}</p>
     </section>
     <section id="services" class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative mt-[8rem]">
       <h2 class="text-center text-3xl mb-4">{{ servicesTitle }}</h2>
@@ -31,15 +40,13 @@
     <section id="contacts" class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative mt-[8rem]">
       <h2 class="text-center text-3xl mb-4">{{ contactsTitle }}</h2>
       <ul>
-        @for (contact of contactList; track contact.label) {
+        @for (contact of contactList; track contact.type) {
           <li class="mt-2 mb-2">
-            <a href="{{ contact.value }}" class="border border-solid rounded-md border-gray-200 block p-2 flex">
-              <ng-container [ngTemplateOutlet]="contactIconFragment" [ngTemplateOutletContext]="{type: contact.type}" />
-              <span for="">{{ contact.label }}</span>
-            </a>
+            <ng-container [ngTemplateOutlet]="contactFragment" [ngTemplateOutletContext]="{contact: contact}" />
           </li>
         }
       </ul>
+      <sub>* {{ contactsSuperscript }}</sub>
     </section>
   </main>
 </div>
@@ -48,7 +55,7 @@
   <div class="text-center sm:text-base mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
     <span class="text-sm sm:text-center">© 2024 Dimitar Ruskov. All Rights Reserved.
     </span>
-    <ul class="flex flex-wrap justify-center items-center mt-3 text-sm font-medium sm:mt-0">
+    <ul class="flex flex-wrap justify-center items-center mt-3 sm:mt-0">
         <li>
             <a aria-label="About link" href="#about" class="hover:underline me-4 md:me-6">{{ aboutTitle }}</a>
         </li>
@@ -58,6 +65,35 @@
     </ul>
   </div>
 </footer>
+
+<ng-template #contactFragment let-contact="contact">
+  @switch (contact.type) {
+    @case ('email') {
+      <a href="mailto:{{ contact.value }}" class="border border-solid rounded-md border-gray-200 block p-2 flex">
+        <ng-container [ngTemplateOutlet]="contactIconFragment" [ngTemplateOutletContext]="{type: contact.type}" />
+        <span for="">{{ contact.label }}</span>
+      </a>
+    }
+    @case ('address') {
+      <a href="{{ googleMapsLink }}" class="border border-solid rounded-md border-gray-200 block p-2 flex">
+        <ng-container [ngTemplateOutlet]="contactIconFragment" [ngTemplateOutletContext]="{type: contact.type}" />
+        <span for="">{{ contact.label }}</span>
+      </a>
+    }
+    @case ('phone') {
+      <a href="tel:{{ contact.value }}" class="border border-solid rounded-md border-gray-200 block p-2 flex">
+        <ng-container [ngTemplateOutlet]="contactIconFragment" [ngTemplateOutletContext]="{type: contact.type}" />
+        <span for="">{{ contact.label }}</span>
+      </a>
+    }
+    @default {
+      <a href="{{ contact.value }}" class="border border-solid rounded-md border-gray-200 block p-2 flex">
+        <ng-container [ngTemplateOutlet]="contactIconFragment" [ngTemplateOutletContext]="{type: contact.type}" />
+        <span for="">{{ contact.label }}</span>
+      </a>
+    }
+  }
+</ng-template>
 
 <ng-template #contactIconFragment let-type="type">
   @switch (type) {
