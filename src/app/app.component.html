@@ -1,7 +1,7 @@
 
 <!-- <router-outlet /> -->
 <header class="h-24 p-6 w-full flex justify-end">
-  <a aria-label="Language change link" href="#" (click)="toggleLang()" class="mr-4">{{lang === 'bg' ? 'EN' : 'БГ'}}</a>
+  <a aria-label="Language change link" (click)="toggleLang()" class="mr-4 cursor-pointer hover:underline">{{lang === 'bg' ? 'EN' : 'БГ'}}</a>
   <a aria-label="Contact link" href="#contacts" class="hover:underline">{{ contactsTitle }}</a>
 </header>
 
@@ -13,20 +13,17 @@
       <h2 class="text-2xl mt-1 font-light">{{ title }}</h2>
       <div class="flex">
         <div>
-          <h2 class="text-2xl mt-1 font-light mt-2">{{ location }}</h2>
+          <h2 class="text-2xl mt-1 font-light">{{ location }}</h2>
         </div>
         <img class="h-48 w-48 sm:h-56 sm:w-56 mr-4 rounded-md mx-auto object-cover" src="/assets/images/martinruskov.png" alt="profile photo">
         
       </div>
       <p class="mt-5 text-zinc-700">{{ introText }}</p>
+      <p class="mt-5 text-zinc-700">{{ introText2 }}</p>
       
     </section>
-    <section id="about" class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative mt-[8rem]">
-      <h2 class="text-center text-3xl mb-4">{{ aboutTitle }}</h2>
-      <p class="text-zinc-700">{{ aboutText }}</p>
-    </section>
     <section id="services" class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative mt-[8rem]">
-      <h2 class="text-center text-3xl mb-4">{{ servicesTitle }}</h2>
+      <h2 class="text-center text-3xl mb-6">{{ servicesTitle }}</h2>
       <ul class="mb-4">
         @for (service of serviceList; track service.name) {
           <li class="pt-4 pb-4 flex justify-between border-b border-solid border-gray-200">
@@ -37,9 +34,15 @@
       </ul>
       <sub>* {{ servicesSubscript }}</sub>
     </section>
+    <section id="about" class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative mt-[8rem]">
+      <h2 class="text-center text-3xl mb-6">{{ aboutTitle }}</h2>
+      <p class="text-zinc-700">{{ aboutText }}</p>
+      <p class="mt-5 text-zinc-700">{{ aboutText2 }}</p>
+      <p class="mt-5 text-zinc-700">{{ aboutText3 }}</p>
+    </section>
     <section id="contacts" class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 relative mt-[8rem]">
-      <h2 class="text-center text-3xl mb-4">{{ contactsTitle }}</h2>
-      <ul>
+      <h2 class="text-center text-3xl mb-8">{{ contactsTitle }}</h2>
+      <ul class="mb-4">
         @for (contact of contactList; track contact.type) {
           <li class="mt-2 mb-2">
             <ng-container [ngTemplateOutlet]="contactFragment" [ngTemplateOutletContext]="{contact: contact}" />

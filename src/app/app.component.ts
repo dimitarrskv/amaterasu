@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import * as data from '../assets/metadata/martinruskov.bg'
+import * as dataBG from '../assets/metadata/martinruskov.bg.json'
+import * as dataEN from '../assets/metadata/martinruskov.en.json'
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,14 @@ export class AppComponent {
 
   title?: string;
   introText?: string;
+  introText2?: string;
   greeting?: string;
   firstName?: string;
   lastName?: string;
   aboutTitle?: string;
   aboutText?: string;
+  aboutText2?: string;
+  aboutText3?: string;
   
   servicesTitle?: string;
   serviceList?: any[];
@@ -33,13 +37,12 @@ export class AppComponent {
   lang?: string;
 
   constructor() {
-    Object.assign(this, data.default);
+    Object.assign(this, dataBG);
   }
 
   async toggleLang() {
     const nextLang = this.lang === 'bg' ? 'en' : 'bg';
-    const metadataFileName = `../assets/metadata/martinruskov.${nextLang}.ts`;
-    const data = (await import(metadataFileName)).default
+    const data = nextLang === 'bg' ? dataBG : dataEN;
     Object.assign(this, data);
     this.lang = nextLang;
   }
